@@ -9,5 +9,51 @@
       "default"
     ],
     "sharedGlobals": []
+  },
+  "release": {
+    "projectsRelationship": "fixed",
+    "projects": ["apps/*", "libs/*", "!*-e2e"],
+    "version": {
+      "conventionalCommits": true,
+      "preVersionCommand": "npx nx run-many -t build"
+    },
+    "changelog": {
+      "workspaceChangelog": {
+        "file": false,
+        "createRelease": "github",
+        "renderOptions": {
+          "authors": false,
+          "applyUsernameToAuthors": false
+        }
+      }
+    },
+    "conventionalCommits": {
+      "types": {
+        "docs": {
+          "title": "Documentation Changes",
+          "semverBump": "none"
+        },
+        "chore": {
+          "title": "Chores",
+          "semverBump": "none"
+        },
+        "style": {
+          "title": "Code Style Changes",
+          "semverBump": "none"
+        },
+        "test": {
+          "title": "Tests",
+          "semverBump": "none"
+        },
+        "ci": {
+          "title": "CI/CD Changes",
+          "semverBump": "none"
+        },
+        "build": {
+          "title": "Build System",
+          "semverBump": "none"
+        },
+      }
+    }
   }
 }
