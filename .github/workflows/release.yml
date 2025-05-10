@@ -18,10 +18,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: "yarn"
+          cache: 'npm'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm install --frozen-lockfile
 
       - name: Set Git user
         run: |
@@ -29,5 +29,5 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run nx release
-        shell: "bash"
-        run: yarn nx release
+        shell: 'bash'
+        run: npm nx release
