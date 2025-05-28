@@ -1,0 +1,56 @@
+name: url-shortner
+
+services:
+  stats-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.service
+    depends_on:
+      stats-service-db:
+        condition: service_healthy
+    env_file:
+      - .env
+    expose:
+      - '${APP_PORT}'
+    networks:
+      - url-shortner-network
+      - stats-service-db-network
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'stats-service:${APP_PORT}']
+      interval: 10s
+      retries: 3
+      start_period: 30s
+      timeout: 5s
+
+  stats-service-db:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+      args:
+        DB_USERNAME: ${DB_USERNAME}
+        DB_PASSWORD: ${DB_PASSWORD}
+        DB_DATABASE: ${DB_DATABASE}
+        DB_PORT: ${DB_PORT}
+    env_file:
+      - .env
+    expose:
+      - ${DB_PORT}
+    ports:
+      - '${DB_PORT}:${DB_PORT}'
+    networks:
+      - stats-service-db-network
+    volumes:
+      - stats-service-db-data:/var/dto/db/data
+    healthcheck:
+      test: bash -c "dockerize -wait tcp://localhost:${DB_PORT} -timeout 5s"
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
+
+networks:
+  url-shortner-network:
+  stats-service-db-network:
+
+volumes:
+  stats-service-db-data:

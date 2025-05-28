@@ -38,6 +38,70 @@
       "options": {
         "passWithNoTests": true
       }
+    },
+    "cpSharedEnv": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cp libs/shared-config/.env {projectRoot}/.env.shared"
+      }
+    },
+    "docker-build": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        {
+          "projects": "libs/shared-config",
+          "target": "docker-build"
+        },
+        "build",
+        "generate-db-dockerfile"
+      ],
+      "options": {
+        "commands": [
+          "docker-compose up --detach",
+          "nx run {projectName}:migrate:deploy"
+        ],
+        "cwd": "{projectRoot}"
+      }
+    },
+    "generate-db-dockerfile": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "make generate-db-dockerfile",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "update-prisma-provider": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "make update-prisma-provider",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "generate-prisma-client": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["update-prisma-provider"],
+      "options": {
+        "command": "prisma generate",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "dev",
+      "options": {
+        "cwd": "{projectRoot}"
+      },
+      "configurations": {
+        "dev": {
+          "command": "prisma migrate dev --skip-generate --name {args.name}"
+        },
+        "deploy": {
+          "command": "prisma migrate deploy"
+        },
+        "reset": {
+          "command": "prisma migrate reset --force"
+        }
+      }
     }
   }
 }

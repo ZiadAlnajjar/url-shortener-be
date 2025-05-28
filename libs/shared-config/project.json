@@ -4,6 +4,23 @@
   "sourceRoot": "libs/shared-config/src",
   "projectType": "library",
   "tags": [],
-  "// targets": "to see all targets run: nx show project shared-config --web",
-  "targets": {}
+  "targets": {
+    "docker-build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker-compose up --detach",
+          "nx run {projectName}:migrate:deploy"
+        ],
+        "cwd": "{projectRoot}"
+      }
+    },
+    "cpSharedEnv": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "make copy-shared-env",
+        "cwd": "{projectRoot}"
+      }
+    }
+  }
 }

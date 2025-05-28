@@ -1,0 +1,18 @@
+ARG MESSAGE_BROKER=rabbitmq:4.1
+ARG MQ_PORT=5672
+ARG DATA_DIR=/var/lib/messagebroker
+
+FROM ${MESSAGE_BROKER}
+
+ARG MQ_PORT
+ARG DATA_DIR
+
+ENV RABBITMQ_NODE_PORT=${MQ_PORT}
+ENV RABBITMQ_MNESIA_BASE=${DATA_DIR}/mnesia
+ENV RABBITMQ_LOG_BASE=${DATA_DIR}/log
+
+RUN mkdir -p ${DATA_DIR} && \
+    chown rabbitmq:rabbitmq ${DATA_DIR} && \
+    chmod 1777 ${DATA_DIR}
+
+EXPOSE ${MQ_PORT}
