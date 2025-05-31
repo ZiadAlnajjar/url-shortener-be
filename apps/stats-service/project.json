@@ -39,17 +39,11 @@
         "passWithNoTests": true
       }
     },
-    "cpSharedEnv": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "cp libs/shared-config/.env {projectRoot}/.env.shared"
-      }
-    },
     "docker-build": {
       "executor": "nx:run-commands",
       "dependsOn": [
         {
-          "projects": "libs/shared-config",
+          "projects": "libs/shared",
           "target": "docker-build"
         },
         "build",

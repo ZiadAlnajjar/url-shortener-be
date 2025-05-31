@@ -4,6 +4,7 @@
     "module": "commonjs",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "strictPropertyInitialization": false,
     "importHelpers": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,

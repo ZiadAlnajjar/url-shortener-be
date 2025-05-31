@@ -15,8 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@url-shortener-be/dto": ["libs/dto/src/index.ts"],
-      "@url-shortener-be/shared-config": ["libs/shared-config/src/index.ts"]
+      "@url-shortener-be/shared": ["libs/shared/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
