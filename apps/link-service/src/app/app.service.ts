@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ConfigService, CreateLinkDto, Link } from '@url-shortener-be/shared';
+import {
+  ConfigService,
+  CreateLinkDto,
+  Link,
+  OriginalUrlData,
+} from '@url-shortener-be/shared';
 import { nanoid } from 'nanoid';
 import { retryUntil } from '../utils/retryUntil.util';
 
@@ -41,7 +46,7 @@ export class AppService {
     return link;
   }
 
-  async getOriginalUrl(shortCode: string): Promise<string> {
+  async getOriginalUrl(shortCode: string): Promise<OriginalUrlData> {
     const link = await this.prisma.link.findFirst({
       where: {
         shortenedUrl: {
@@ -54,10 +59,7 @@ export class AppService {
       throw new Error('Link not found');
     }
 
-    return link.originalUrl;
-  }
-
-  getData(): { message: string } {
-    return { message: 'Hello API' };
+    const { id, originalUrl } = link;
+    return { id, originalUrl };
   }
 }

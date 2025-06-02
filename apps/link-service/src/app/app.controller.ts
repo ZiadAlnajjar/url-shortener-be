@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
 import { MessagePattern } from '@nestjs/microservices';
-import { CreateLinkDto } from '@url-shortener-be/shared';
+import { CreateLinkDto, OriginalUrlData } from '@url-shortener-be/shared';
 
 @Controller()
 export class AppController {
@@ -19,7 +19,7 @@ export class AppController {
   }
 
   @MessagePattern('resolve_link')
-  async resolveLink(data: { shortCode: string }): Promise<string> {
+  async resolveLink(data: { shortCode: string }): Promise<OriginalUrlData> {
     const { shortCode } = data;
     return this.appService.getOriginalUrl(shortCode);
   }

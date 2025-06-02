@@ -1,8 +1,9 @@
-import { Logger, RequestMethod } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { ConfigService } from '@url-shortener-be/shared';
 import cookieParser from 'cookie-parser';
+import { type Express } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,10 +11,11 @@ async function bootstrap() {
   const globalPrefix = 'api';
   const port = configService.get('port');
 
-  app.setGlobalPrefix(globalPrefix, {
-    exclude: [{ path: '/:id', method: RequestMethod.GET }],
-  });
+  app.setGlobalPrefix(globalPrefix);
   app.use(cookieParser());
+
+  const expressApp = app.getHttpAdapter().getInstance() as Express;
+  expressApp.disable('x-powered-by');
 
   await app.listen(port);
   Logger.log(

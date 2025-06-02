@@ -4,7 +4,7 @@ import {
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
-import { Prisma, PrismaClient } from '@prisma/client-link';
+import { Prisma, PrismaClient } from '@prisma/client-stats';
 
 @Injectable()
 export class PrismaService
@@ -13,7 +13,7 @@ export class PrismaService
 {
   private readonly logger = new Logger(PrismaService.name);
 
-  private readonly softDeletableModels = ['Link'];
+  private readonly softDeletableModels = ['Click'];
 
   constructor() {
     super({

@@ -1,4 +1,5 @@
 import nx from '@nx/eslint-plugin';
+import stylistic from '@stylistic/eslint-plugin';
 
 export default [
   ...nx.configs['flat/base'],
@@ -38,5 +39,22 @@ export default [
     ],
     // Override or add rules here
     rules: {},
+  },
+  {
+    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
+    plugins: {
+      '@stylistic': stylistic,
+    },
+    rules: {
+      ...stylistic.configs.recommended.rules,
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          varsIgnorePattern: '^_',
+        },
+      ],
+      '@stylistic/semi': ['error', 'always'],
+      '@stylistic/brace-style': 'error',
+    },
   },
 ];

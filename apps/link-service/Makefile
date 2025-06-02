@@ -19,7 +19,8 @@ __check_vars:
 generate-db-dockerfile: REQUIRED_VARS := DB_USERNAME DB_PROVIDER
 generate-db-dockerfile: __check_vars
 	@DB_CONFIG=""; \
-	case "$(DB_ENGINE)" in \
+	ENGINE_NAME=$$(echo $(DB_ENGINE) | cut -d: -f1); \
+	case "$$ENGINE_NAME" in \
 		postgres) \
 			DB_CONFIG+=$$'\n''ENV POSTGRES_USER="$${DB_USERNAME}"' \
 			DB_CONFIG+=$$'\n''ENV POSTGRES_PASSWORD="$${DB_PASSWORD}"' \
@@ -38,8 +39,8 @@ generate-db-dockerfile: __check_vars
 			DB_CONFIG+=$$'\n\n''CMD ["mysqld", "--datadir=$${DATA_DIR}"]'; \
 			;; \
 		*) \
-			echo "Unsupported DB_ENGINE: $(DB_ENGINE)" \
-			echo "Possible DB_ENGINE values: postgres, mysql" \
+			echo "Unsupported DB_ENGINE: $(DB_ENGINE)"; \
+			echo "Possible DB_ENGINE values: postgres, mysql"; \
 			exit 1; \
 			;; \
 	esac; \

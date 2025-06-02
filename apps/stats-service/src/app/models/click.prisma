@@ -1,0 +1,8 @@
+model Click {
+  id        String   @id @default(ulid())
+  linkId    String
+  timestamp DateTime @default(now())
+  userAgent String?
+  ip        String?
+  referer   String?
+}

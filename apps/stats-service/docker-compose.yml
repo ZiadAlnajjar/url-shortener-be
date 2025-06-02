@@ -50,6 +50,7 @@ services:
 
 networks:
   url-shortner-network:
+    external: true
   stats-service-db-network:
 
 volumes:

@@ -21,7 +21,7 @@ wget -O - \
 chmod +x /dockerize
 EOF
 
-FROM mysql:$DB_VERSION AS final
+FROM mysql:9.3 AS final
 
 ARG DB_USERNAME
 ARG DB_PASSWORD

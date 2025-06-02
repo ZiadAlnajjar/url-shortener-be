@@ -12,6 +12,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { generateToken } from '../utils/generateToken';
 import { LinkResolver } from './link/link.resolver';
+import { LinkService } from './link/link.service';
+import { LinkController } from './link/link.controller';
 
 @Module({
   imports: [
@@ -50,7 +52,7 @@ import { LinkResolver } from './link/link.resolver';
       },
     ]),
   ],
-  providers: [AppService, LinkResolver, DateScalar],
-  controllers: [AppController],
+  providers: [AppService, LinkService, LinkResolver, DateScalar],
+  controllers: [AppController, LinkController],
 })
 export class AppModule {}
