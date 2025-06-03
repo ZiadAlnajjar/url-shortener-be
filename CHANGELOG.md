@@ -1,3 +1,9 @@
+## 0.2.0 (2025-06-03)
+
+### 🚀 Features
+
+- initial release ([#1](https://github.com/ZiadAlnajjar/url-shortener-be/pull/1))
+
 ## 0.1.0 (2025-06-03)
 
 ### 🚀 Features
