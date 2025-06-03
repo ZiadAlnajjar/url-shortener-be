@@ -1,0 +1,26 @@
+name: url-shortner
+
+services:
+  message-queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MESSAGE_BROKER: ${MESSAGE_BROKER}
+        MQ_PORT: ${MQ_PORT}
+    env_file:
+      - .env
+      - .tools
+    expose:
+      - ${MQ_PORT}
+    networks:
+      - url-shortner-network
+    volumes:
+      - mq-data:/var/lib/messagebroker
+
+networks:
+  url-shortner-network:
+    name: url-shortner-network
+
+volumes:
+  mq-data:

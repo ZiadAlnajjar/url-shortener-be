@@ -1,13 +1,87 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
-      "default"
+      "default",
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/eslint.config.mjs",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/src/test-setup.[jt]s",
+      "!{projectRoot}/test-setup.[jt]s"
     ],
     "sharedGlobals": []
-  }
+  },
+  "release": {
+    "projectsRelationship": "fixed",
+    "projects": ["apps/*", "!libs/*", "!tests/*"],
+    "version": {
+      "conventionalCommits": true
+    },
+    "changelog": {
+      "workspaceChangelog": {
+        "file": "CHANGELOG.md",
+        "createRelease": "github",
+        "renderOptions": {
+          "authors": false,
+          "applyUsernameToAuthors": false
+        }
+      }
+    },
+    "conventionalCommits": {
+      "types": {
+        "docs": {
+          "title": "Documentation Changes",
+          "semverBump": "none"
+        },
+        "chore": {
+          "title": "Chores",
+          "semverBump": "none"
+        },
+        "style": {
+          "title": "Code Style Changes",
+          "semverBump": "none"
+        },
+        "test": {
+          "title": "Tests",
+          "semverBump": "none"
+        },
+        "ci": {
+          "title": "CI/CD Changes",
+          "semverBump": "none"
+        },
+        "build": {
+          "title": "Build System",
+          "semverBump": "none"
+        }
+      }
+    }
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/webpack/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
+      }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/jest/plugin",
+      "options": {
+        "targetName": "test"
+      },
+      "exclude": ["tests/**/*", "apps/api-gateway-e2e/**/*"]
+    }
+  ]
 }

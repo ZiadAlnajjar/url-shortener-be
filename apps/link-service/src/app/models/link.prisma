@@ -1,0 +1,9 @@
+model Link {
+  id           String    @id @default(ulid())
+  originalUrl  String
+  shortenedUrl String    @unique
+  clientToken  String    @unique
+  createdAt    DateTime  @default(now())
+  expiresAt    DateTime?
+  deletedAt    DateTime?
+}

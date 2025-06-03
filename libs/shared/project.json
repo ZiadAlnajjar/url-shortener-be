@@ -1,0 +1,26 @@
+{
+  "name": "shared",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "docker-build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker-compose up --detach",
+          "nx run {projectName}:migrate:deploy"
+        ],
+        "cwd": "{projectRoot}"
+      }
+    },
+    "cpSharedEnv": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "make copy-shared-env",
+        "cwd": "{projectRoot}"
+      }
+    }
+  }
+}

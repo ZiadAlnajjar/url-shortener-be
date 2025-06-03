@@ -1,0 +1,9 @@
+datasource db {
+  provider = "postgresql" // Generated automatically by update-prisma-provider
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../node_modules/@prisma/client-link"
+}

@@ -1,0 +1,6 @@
+{
+  "*": [
+    "nx format:write --files",
+    "nx affected:lint --skip-nx-cache --fix --files"
+  ]
+}

@@ -1,0 +1,42 @@
+# syntax=docker/dockerfile:1.4
+ 
+# GENERATED FILE - DO NOT EDIT
+
+ARG DB_DATABASE
+ARG DB_USERNAME
+ARG DB_PASSWORD
+ARG DB_PORT
+ARG DOCKERIZE_VERSION=v0.9.3
+
+FROM debian:bookworm-slim AS builder
+
+ARG DOCKERIZE_VERSION
+
+RUN <<EOF
+apt-get update
+apt-get install -y --no-install-recommends wget ca-certificates
+wget -O - \
+  "https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz" \
+  | tar -xz -C /
+chmod +x /dockerize
+EOF
+
+FROM mysql:9.3 AS final
+
+ARG DB_USERNAME
+ARG DB_PASSWORD
+ARG DB_DATABASE
+ARG DB_PORT
+ARG DATA_DIR=/var/lib/db/data
+
+# DB_SPECIFIC_CONFIGURATION
+
+ENV MYSQL_ROOT_PASSWORD="${DB_PASSWORD}"
+ENV MYSQL_DATABASE="${DB_DATABASE}"
+ENV MYSQL_TCP_PORT="${DB_PORT}"
+
+CMD ["mysqld", "--datadir=${DATA_DIR}"]
+
+COPY --from=builder /dockerize /usr/local/bin/dockerize
+
+EXPOSE $DB_PORT

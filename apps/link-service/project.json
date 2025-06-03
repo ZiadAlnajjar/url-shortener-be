@@ -1,0 +1,101 @@
+{
+  "name": "link-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/link-service/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "webpack-cli build",
+        "args": ["node-env=production"]
+      },
+      "configurations": {
+        "development": {
+          "args": ["node-env=development"]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "link-service:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "link-service:build:development"
+        },
+        "production": {
+          "buildTarget": "link-service:build:production"
+        }
+      }
+    },
+    "test": {
+      "options": {
+        "passWithNoTests": true
+      }
+    },
+    "docker-build": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        {
+          "projects": "libs/shared",
+          "target": "docker-build"
+        },
+        "build",
+        "generate-db-dockerfile"
+      ],
+      "options": {
+        "commands": [
+          "docker-compose up --detach",
+          "nx run {projectName}:migrate:deploy"
+        ],
+        "cwd": "{projectRoot}"
+      }
+    },
+    "generate-db-dockerfile": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "make generate-db-dockerfile",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "update-prisma-provider": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "make update-prisma-provider",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "generate-prisma-client": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["update-prisma-provider"],
+      "options": {
+        "command": "prisma generate",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "dev",
+      "options": {
+        "cwd": "{projectRoot}"
+      },
+      "configurations": {
+        "dev": {
+          "command": "prisma migrate dev --skip-generate --name {args.name}"
+        },
+        "deploy": {
+          "command": "prisma migrate deploy"
+        },
+        "reset": {
+          "command": "prisma migrate reset --force"
+        }
+      }
+    }
+  }
+}

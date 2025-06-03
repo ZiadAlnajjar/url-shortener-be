@@ -1,0 +1,25 @@
+name: url-shortner
+
+services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    expose:
+      - ${APP_PORT}
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+    networks:
+      - url-shortner-network
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'api-gateway:${APP_PORT}']
+      interval: 10s
+      retries: 3
+      start_period: 30s
+      timeout: 5s
+
+networks:
+  url-shortner-network:
+    external: true
