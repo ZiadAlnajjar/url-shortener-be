@@ -8,12 +8,12 @@ export class ConfigService extends NestJSConfigService {
   getMicroserviceOptions<T = TransporterOptions>(options: object): T;
   getMicroserviceOptions<T = TransporterOptions>(
     queue: keyof typeof QUEUES,
-    options?: object
+    options?: object,
   ): T;
 
   getMicroserviceOptions<T = TransporterOptions>(
     arg1: keyof typeof QUEUES | object,
-    arg2: object = {}
+    arg2: object = {},
   ): T {
     if (typeof arg1 === 'object') {
       const microserviceOptions = this.get('mq.microserviceOptions');

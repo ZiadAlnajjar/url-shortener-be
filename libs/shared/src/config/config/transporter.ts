@@ -20,8 +20,8 @@ const loadConfig = () => {
 
   if (!process.env.MQ_URL) {
     throw new Error(
-      'Missing required environment variable: MQ_URL\n' +
-        'Init .env in libs/shared, then run cpSharedEnv target'
+      'Missing required environment variable: MQ_URL\n'
+      + 'Init .env in libs/shared, then run cpSharedEnv target',
     );
   }
 
@@ -49,7 +49,7 @@ const loadConfig = () => {
       break;
     default:
       throw new Error(
-        `Invalid environment variable value for MESSAGE_BROKER\npossible values: rabbitmq`
+        `Invalid environment variable value for MESSAGE_BROKER\npossible values: rabbitmq`,
       );
   }
 

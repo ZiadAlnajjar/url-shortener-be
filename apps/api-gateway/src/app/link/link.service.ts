@@ -12,16 +12,16 @@ import { ClientProxy } from '@nestjs/microservices';
 export class LinkService {
   constructor(
     @Inject(SERVICES.LINK) private linkClient: ClientProxy,
-    @Inject(SERVICES.STATS) private statsClient: ClientProxy
+    @Inject(SERVICES.STATS) private statsClient: ClientProxy,
   ) {}
 
   async resolveShortenedUrl(
     shortCode: string,
-    clientData: ClientInfo
+    clientData: ClientInfo,
   ): Promise<string> {
     const resolvedLink: Observable<OriginalUrlData> = this.linkClient.send(
       'resolve_link',
-      { shortCode }
+      { shortCode },
     );
     const { id, originalUrl } = await firstValueFrom(resolvedLink);
 

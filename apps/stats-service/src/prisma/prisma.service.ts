@@ -9,8 +9,7 @@ import { Prisma, PrismaClient } from '@prisma/client-stats';
 @Injectable()
 export class PrismaService
   extends PrismaClient<Prisma.PrismaClientOptions, Prisma.LogLevel>
-  implements OnModuleInit, OnModuleDestroy
-{
+  implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(PrismaService.name);
 
   private readonly softDeletableModels = ['Click'];
@@ -41,7 +40,7 @@ export class PrismaService
     this.$on('warn', ({ message }) => this.logger.warn(message));
     this.$on('info', ({ message }) => this.logger.debug(message));
     this.$on('query', ({ query, params }) =>
-      this.logger.log(`${query}; ${params}`)
+      this.logger.log(`${query}; ${params}`),
     );
   }
 
@@ -80,7 +79,7 @@ export class PrismaService
     args: Record<string, object>,
     query: (args: object) => void,
     operation?: string,
-    data: object = {}
+    data: object = {},
   ) {
     if (!this.isSoftDeletable(model)) {
       return query(args);

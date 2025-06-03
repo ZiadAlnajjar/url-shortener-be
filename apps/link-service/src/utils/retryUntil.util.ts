@@ -7,7 +7,7 @@ export async function retryUntil<T>(
   } = {
     maxRetries: 5,
     delayMs: 0,
-  }
+  },
 ): Promise<T> {
   const maxRetries = options?.maxRetries;
   const delayMs = options?.delayMs;

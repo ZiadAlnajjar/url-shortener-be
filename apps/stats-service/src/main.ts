@@ -11,7 +11,7 @@ async function bootstrap() {
 
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
-    configService.getMicroserviceOptions('STATS')
+    configService.getMicroserviceOptions('STATS'),
   );
 
   await app.listen();

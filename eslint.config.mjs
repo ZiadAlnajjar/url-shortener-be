@@ -55,6 +55,21 @@ export default [
       ],
       '@stylistic/semi': ['error', 'always'],
       '@stylistic/brace-style': 'error',
+      '@stylistic/comma-dangle': ['error', 'always-multiline'],
+      '@stylistic/arrow-parens': ['error', 'always'],
+      '@stylistic/member-delimiter-style': [
+        'error',
+        {
+          overrides: {
+            interface: {
+              multiline: {
+                delimiter: 'semi',
+                requireLast: true,
+              },
+            },
+          },
+        },
+      ],
     },
   },
 ];

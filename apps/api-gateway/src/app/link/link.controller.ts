@@ -11,7 +11,7 @@ export class LinkController {
   async redirect(
     @Param('shortCode') shortCode: string,
     @Req() req: Request,
-    @Res() res: Response
+    @Res() res: Response,
   ) {
     const xForwardedFor: string | null = req.headers[
       'x-forwarded-for'
@@ -25,7 +25,7 @@ export class LinkController {
     };
     const url = await this.linkService.resolveShortenedUrl(
       shortCode,
-      clientData
+      clientData,
     );
 
     res.redirect(url);

@@ -13,7 +13,7 @@ import { retryUntil } from '../utils/retryUntil.util';
 export class AppService {
   constructor(
     private prisma: PrismaService,
-    private configService: ConfigService
+    private configService: ConfigService,
   ) {}
 
   async createShortenedUrl(data: CreateLinkDto): Promise<Link> {
@@ -31,7 +31,7 @@ export class AppService {
     if (await isShortenedUrlExists(shortenedUrl)) {
       shortenedUrl = await retryUntil(
         () => shortenUrl(),
-        (res) => !isShortenedUrlExists(res)
+        (res) => !isShortenedUrlExists(res),
       );
     }
 
