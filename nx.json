@@ -16,14 +16,13 @@
   },
   "release": {
     "projectsRelationship": "fixed",
-    "projects": ["apps/*", "libs/*", "!*-e2e"],
+    "projects": ["apps/*", "!libs/*", "!tests/*"],
     "version": {
-      "conventionalCommits": true,
-      "preVersionCommand": "npx nx run-many -t build"
+      "conventionalCommits": true
     },
     "changelog": {
       "workspaceChangelog": {
-        "file": false,
+        "file": "CHANGELOG.md",
         "createRelease": "github",
         "renderOptions": {
           "authors": false,
