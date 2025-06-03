@@ -16,4 +16,4 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: npm install --frozen-lockfile
-      - run: npm nx release --dry-run
+      - run: npx nx release --dry-run
