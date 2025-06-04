@@ -16,7 +16,7 @@ export class LinkResolver {
 
   @Mutation(() => Link)
   async createShortLink(
-    @Args('newLikeData') newLinkData: NewLinkInput,
+    @Args('newLinkData') newLinkData: NewLinkInput,
     @Context('clientToken') clientToken: string,
   ): Promise<Link> {
     const payload = { ...newLinkData, clientToken };
