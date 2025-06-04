@@ -1,96 +1,149 @@
-# UrlShortenerBe
+# URL Shortener Backend
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+[![CI](https://img.shields.io/github/actions/workflow/status/ZiadAlnajjar/url-shortener-be/.github/workflows/release.yml?branch=main&style=flat-square)](https://github.com/ZiadAlnajjar/url-shortener-be/actions)
+[![License: MIT](https://img.shields.io/github/license/ZiadAlnajjar/url-shortener-be?style=flat-square)](./LICENSE)
+[![Made with Nx](https://img.shields.io/badge/Made%20with-Nx-5FA6D6?style=flat-square&logo=nrwl&logoColor=white)](https://nx.dev)
+[![Dockerized](https://img.shields.io/badge/docker-ready-blue?style=flat-square&logo=docker)](https://www.docker.com/)
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+A scalable, microservices-based backend for a URL shortening application, built with Nestjs, Prisma, and Docker. It includes modular services for link management and analytics, inter-service messaging via RabbitMQ, and support for multiple databases.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+---
 
-## Run tasks
+## 🚀 Quick Start
 
-To run tasks with Nx use:
+### 🔧 Local Setup
 
-```sh
-npx nx <target> <project-name>
+> ℹ️ Some commands use `make` internally, so ensure `make` is installed.
+
+1. **Configure Environment Files**
+
+Create `.env` files in the following directories:
+
+```
+apps/link-service/.env
+apps/stats-service/.env
+libs/shared/.env
 ```
 
-For example:
+2. **Copy Shared Environment Variables**
 
-```sh
-npx nx build myproject
+```bash
+nx run shared:cpSharedEnv
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+3. **Start Dependencies**
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Make sure RabbitMQ and database instances (PostgreSQL or MySQL) are running.
 
-## Add new projects
+4. **Run Database Migrations**
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-To install a new plugin you can use the `nx add` command. Here's an example of adding the React plugin:
-```sh
-npx nx add @nx/react
+```bash
+nx run-many --target=migrate --configuration=deploy --all
 ```
 
-Use the plugin's generator to create new projects. For example, to create a new React app or library:
+5. **Generate Prisma Clients**
 
-```sh
-# Generate an app
-npx nx g @nx/react:app demo
-
-# Generate a library
-npx nx g @nx/react:lib some-lib
+```bash
+nx run-many --target=generate-prisma-client --all
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+6. **Build and Start All Services**
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
+```bash
+nx run-many --target=build --all
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+---
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### 🐳 Docker-Based Setup
 
-### Step 2
+To spin up services along with RabbitMQ and databases via Docker:
 
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+```bash
+nx run-many --target=docker-build --all
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+---
 
-## Install Nx Console
+## 🔄 Changing the Database Provider
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+You can switch between PostgreSQL and MySQL for a given service.
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### Steps:
 
-## Useful links
+1. In the service directory (e.g., `apps/link-service`), update the `.env` file:
 
-Learn more:
+- Set `DB_PROVIDER` to either `postgresql` or `mysql`
+- Update other DB-related environment variables accordingly
 
-- [Learn more about this workspace setup](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+2. Generate the updated Prisma client (also updates the schema provider):
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```bash
+nx run <service_name>:generate-prisma-client
+```
+
+3. If using Docker:
+
+- Update the `.tools` file to reflect the correct DB image
+- Then rebuild:
+
+```bash
+nx run <service_name>:docker-build
+```
+
+---
+
+## 🏗 Architecture
+
+This monorepo uses [Nx](https://nx.dev) to manage multiple services and libraries.
+
+### Services:
+
+- **API Gateway (`apps/api-gateway`)**
+  Exposes endpoints for public access and routes requests to backend services.
+
+- **Link Service (`apps/link-service`)**
+  Handles URL shortening, redirection.
+
+- **Stats Service (`apps/stats-service`)**
+  Tracks analytics like click counts.
+
+### Shared Libraries:
+
+- **Shared Config (`libs/shared`)**
+  Contains shared types, constants, env config loaders, and utilities.
+
+---
+
+## 🧪 Usage Examples
+
+### 🔗 Shorten a URL
+
+GraphQL endpoint:
+
+```
+POST /api/graphql
+```
+
+Mutation:
+
+```graphql
+mutation {
+  createShortLink(newLinkData: { originalUrl: "https://example.com" }) {
+    id
+    originalUrl
+    shortenedUrl
+    ...
+  }
+}
+```
+
+---
+
+### 🔁 Redirect to Original URL
+
+```
+GET /api/link/:shortCode
+```
+
+> **Note:** This endpoint is intended to be proxied via a reverse proxy to strip the `/api/link` prefix for public redirection (e.g., `/abc123` → `/api/link/abc123`).
