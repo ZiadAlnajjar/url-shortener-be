@@ -1,3 +1,9 @@
+## 0.2.1 (2025-06-04)
+
+### 🩹 Fixes
+
+- Dockerfile and GraphQL input and improve README ([#2](https://github.com/ZiadAlnajjar/url-shortener-be/pull/2))
+
 ## 0.2.0 (2025-06-03)
 
 ### 🚀 Features
